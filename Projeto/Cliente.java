@@ -53,6 +53,7 @@ public class Cliente {
         this.cpf = cpf;
     }
 
+    //atribui a data de nascimento ao objeto e calcula sua idade
     public void setDataNascimento(String dataNascimento){
         this.dataNascimento = dataNascimento;
 
@@ -86,33 +87,22 @@ public class Cliente {
         this.endereco = endereco;
     }
 
-    //metodos de um cliente
-    // to string?
+    //métodos de um cliente
 
+    //faz a sobrecarga do método toString(), retornando as propriedades do método
+    public String toString(){
+        return "Nome: " + this.nome + "\nCPF: " + this.cpf + "\nData de nascimento: " + this.dataNascimento + "\nIdade: " + this.idade + "\nEndereço: " + this.endereco;
+    }
+
+    //verifica se o cpf é válido
     public boolean validarCPF(String cpf){
         boolean valido = false;
-
-        //cria um array com os numerais em tipo char
-        //char[] numericos = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-        //looping que compara cada char da string cpf com cada char do array numericos para remover caracteres nao numericos
-        /*for (int i = 0; i < cpf.length(); i++){
-            boolean numero = false;
-            for (int j = 0; j < numericos.length; j++){
-                if (cpf.charAt(i) == numericos[j]){
-                    numero = true;
-                }
-            }
-            if (!numero){
-                String caractere = Character.toString(cpf.charAt(i));
-                cpf = cpf.replaceAll(caractere, "");
-            }
-        }*/
-
+        int dig1, dig2;
+        
+        //remove os caracteres não numéricos
         cpf = cpf.replaceAll("[^0-9]", "");
 
-        //verificando se o cpf possui tem 11 digitos
-        int dig1, dig2;
+        //verifica se o cpf possui tem 11 digitos
         if (cpf.length() == 11){
             //se sim, calcula o digito verificador
             int soma = 0;
@@ -146,10 +136,10 @@ public class Cliente {
                 dig2 = 11-resto;
             }
 
-            //verificando se os digitos verificadores calculados sao iguais ao do cpf informado
             int dig1cpf = Integer.parseInt(Character.toString(cpf.charAt(9)));
             int dig2cpf = Integer.parseInt(Character.toString(cpf.charAt(10)));
 
+             //verifica se os digitos verificadores calculados sao iguais ao do cpf informado
             if (dig1cpf == dig1 && dig2cpf == dig2){
                 valido = true;
             }

@@ -1,18 +1,20 @@
 package Projeto;
 import java.util.Random;
-//import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Sinistro {
     //atributos de um sinistro
     private int id;
     private String data;
     private String endereco;
-    private int[] idsGerados;
+    private static List<Integer> idsGerados = new ArrayList<>();
 
     //construtor
     public Sinistro(String data, String endereco){
         this.data = data;
         this.endereco = endereco;
+        this.setId();
     }
 
     //getters da classe
@@ -32,20 +34,15 @@ public class Sinistro {
     public void setId(){
         boolean existe = true;
         while (existe){
-            //gerando um id aleatorio entre 111111 e 999999
+            //gera um id aleatorio entre 111111 e 999999
             Random aleatorio = new Random();
             int id = aleatorio.nextInt(888889) + 111111;
 
-            //verificando se o id eh unico
-            existe = false;
-            for (int i = 0; i < idsGerados.length; i++){
-                if (id == idsGerados[i]){
-                    existe = true;
-                }
-            }
-            if (!existe){
+            //verifica se o id eh unico
+            if (!idsGerados.contains(id)){
                 this.id = id;
-                //add o id no array
+                idsGerados.add(id);
+                existe = false;
             }
         }
     }
