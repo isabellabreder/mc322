@@ -1,9 +1,10 @@
 package projeto;
+
 public class Veiculo {
     //atributos de um veiculo
     private String placa;
     private String marca;
-    private String modelo;
+    private String modelo; 
     private int anoFabricacao;
 
     //construtor

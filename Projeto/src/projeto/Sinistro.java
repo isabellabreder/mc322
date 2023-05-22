@@ -2,11 +2,12 @@ package projeto;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class Sinistro {
-    //atributos de um sinistro
+    //atributos de um sinistro 
     private final int id;
-    private String data;
+    private LocalDate data;
     private String endereco;
     private Seguradora seguradora;
     private Veiculo veiculo;
@@ -14,7 +15,7 @@ public class Sinistro {
     private static List<Integer> idsGerados = new ArrayList<>();
 
     //construtor
-    public Sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+    public Sinistro(LocalDate data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
         boolean existe = true;
         int novoId = 0;
         while (existe){
@@ -41,7 +42,7 @@ public class Sinistro {
         return id;
     }
 
-    public String getData(){
+    public LocalDate getData(){
         return data;
     }
 
@@ -62,7 +63,7 @@ public class Sinistro {
     }
 
     //setters da classe
-    public void setData(String data){
+    public void setData(LocalDate data){
         this.data = data;
     }
 

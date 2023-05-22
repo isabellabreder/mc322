@@ -1,15 +1,15 @@
 package projeto;
-import java.lang.Character;
-import java.lang.Integer;
 import java.time.LocalDate;
+import java.time.Period;
 
 public class ClientePF extends Cliente{
     private final String cpf;
     private String genero;
     private LocalDate dataLicenca;
     private String educacao;
-    private LocalDate dataNascimento;
+    private LocalDate dataNascimento; 
     private String classeEconomica;
+    private int idade; 
 
     public ClientePF(String nome, String endereco, String cpf, String genero, LocalDate dataLicenca, String educacao, LocalDate dataNascimento, String classeEconomica){
         super(nome, endereco);
@@ -19,6 +19,7 @@ public class ClientePF extends Cliente{
         this.educacao = educacao;
         this.dataNascimento = dataNascimento;
         this.classeEconomica = classeEconomica;
+        this.setIdade();
     }
     //getters da classe
     public String getCPF(){
@@ -50,6 +51,10 @@ public class ClientePF extends Cliente{
         return "PF";
     }
 
+    public int getIdade(){
+        return idade;
+    }
+
     //setters da classe
     public void setGenero(String genero){
         this.genero = genero;
@@ -71,60 +76,17 @@ public class ClientePF extends Cliente{
         this.classeEconomica = classeEconomica;
     }
 
-    //métodos de um cliente
+    //calcula a idade da pessoa
+    public void setIdade(){
+        LocalDate atual = LocalDate.now();
+        Period intervalo = Period.between(this.dataNascimento, atual);
+        this.idade = intervalo.getYears();
+    }
 
-    //verifica se o cpf é válido
-    public boolean validarCPF(String cpf){
-        boolean valido = false;
-        int dig1, dig2;
-        
-        //remove os caracteres não numéricos
-        cpf = cpf.replaceAll("[^0-9]", "");
-
-        //verifica se o cpf possui tem 11 digitos
-        if (cpf.length() == 11){
-            //se sim, calcula o digito verificador
-            int soma = 0;
-
-            //multiplica os 9 primeiros digitos do cpf pelos pesos de 10 a 2
-            for (int i = 0, j = 10; i < 9; i++, j--){
-                int num = Integer.parseInt(Character.toString(cpf.charAt(i)));
-                soma += j*num;
-            }
-            //o resto da divisao por 11 da soma determina o primeiro digito
-            int resto = soma%11;
-            if (resto == 0 || resto == 1){
-                dig1 = 0;
-            } else {
-                dig1 = 11-resto;
-            }
-            soma = 0;
-
-            //para descobrir o segundo digito, realiza o mesmo esquema, mas multiplicando os 10 primeiros digitos (verificador 1 incluso) por pesos de 11 a 2
-            for (int i = 0, j = 11; i < 10; i++, j--){
-                int num = Integer.parseInt(Character.toString(cpf.charAt(i)));
-                if (i == 9){
-                    num = dig1;
-                }
-                soma += j*num;
-            }
-            resto = soma%11;
-            if (resto == 0 || resto == 1){
-                dig2 = 0;
-            } else {
-                dig2 = 11-resto;
-            }
-
-            int dig1cpf = Integer.parseInt(Character.toString(cpf.charAt(9)));
-            int dig2cpf = Integer.parseInt(Character.toString(cpf.charAt(10)));
-
-             //verifica se os digitos verificadores calculados sao iguais ao do cpf informado
-            if (dig1cpf == dig1 && dig2cpf == dig2){
-                valido = true;
-            }
-        }
-        
-        return valido;
+    //métodos de um cliente PF
+    @Override
+    public double calculaScore() {
+    	return CalcSeguro.VALOR_BASE.getValor()*CalcSeguro.getFatorIdade(idade)*super.getQtVeiculos();
     }
 
     //faz a sobrescrita do método toString(), retornando as propriedades do objeto

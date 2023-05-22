@@ -1,6 +1,7 @@
 package projeto;
 import java.util.List;
 import java.util.LinkedList;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Seguradora {
@@ -104,7 +105,7 @@ public class Seguradora {
     }
 
     //gera o sinistro de um veiculo de um cliente
-    public boolean gerarSinistro(String data, String endereco, Veiculo veiculo, Cliente cliente){
+    public boolean gerarSinistro(LocalDate data, String endereco, Veiculo veiculo, Cliente cliente){
         boolean adicionado = false;
         Sinistro _sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
         listaSinistros.add(_sinistro); 
@@ -131,6 +132,29 @@ public class Seguradora {
         for (Sinistro sinistro : listaSinistros){
             System.out.println("ID do sinistro: " + sinistro.getId() + "        Cliente: " + sinistro.getCliente().getNome());
         }
+    }
+    
+    public int qtSinistrosCliente(Cliente cliente){
+        int qtSinistros = 0;
+        for (Sinistro sinistro : this.getListaSinistros()){
+            if (sinistro.getCliente() == cliente){
+                qtSinistros++;
+            }
+        }
+        return qtSinistros;
+    }
+    
+    public void calcularPrecoSeguroCliente(Cliente cliente) {
+    	cliente.setValorSeguro(cliente.calculaScore() * (1 + qtSinistrosCliente(cliente)));
+    }
+    
+    public int calcularReceita() {
+        int receita = 0;
+    	for (Cliente cliente : this.getListaClientes()){
+            calcularPrecoSeguroCliente(cliente);
+            receita += cliente.getValorSeguro();
+        }
+        return receita;
     }
 
     @Override
