@@ -22,7 +22,7 @@ public enum MenuOperacoes {
 	EXCLUIR_SINISTRO(33),
 	VOLTAR(-1);
 	
-	public final double operacao;
+	public final int operacao;
 	
 	MenuOperacoes(int operacao){
 		this.operacao = operacao;

@@ -287,7 +287,7 @@ public class AppMain {
         System.out.print("Classe econômica: ");
         String classe = scanner.nextLine();
 
-        ClientePF clientePF = new ClientePF(nome, endereco, cpf, genero, dataLicenca, educacao, dataNascimento, classe);
+        Cliente clientePF = new ClientePF(nome, endereco, cpf, genero, dataLicenca, educacao, dataNascimento, classe);
 
         Seguradora seguradora = null;
         for (Seguradora _seguradora : seguradoras){
@@ -303,7 +303,36 @@ public class AppMain {
     }
     
     private static void cadastrarClientePJ() {
-        // Código para cadastrar um cliente PJ
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Cadastrar Cliente Pessoa Jurídica **********");
+        System.out.print("Nome da seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Endereço: ");
+        String endereco = scanner.nextLine();
+        System.out.print("CNPJ: ");
+        String cnpj = scanner.nextLine();
+        System.out.print("Data Fundação (formato: dd/MM/yyyy): ");
+        String dataFundacaoString = scanner.nextLine();
+        LocalDate dataFundacao = LocalDate.parse(dataFundacaoString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.print("Quantidade de funcionarios ");
+        int funcionarios = scanner.nextInt();
+
+        Cliente clientePJ = new ClientePJ(nome, endereco, cnpj, dataFundacao, funcionarios);
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : seguradoras){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        seguradora.cadastrarCliente(clientePJ);
+        System.out.println("Cliente Pessoa Jurídica cadastrado com sucesso!");
+        scanner.close();
     }
     
     private static void cadastrarVeiculo() {
