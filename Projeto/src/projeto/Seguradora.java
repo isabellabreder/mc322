@@ -12,6 +12,7 @@ public class Seguradora {
     private String endereco;
     private List<Sinistro> listaSinistros = new LinkedList<Sinistro>();
     private List<Cliente> listaClientes = new ArrayList<Cliente>();
+    private static List<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
 
     //construtor
     public Seguradora(String nome, String telefone, String email, String endereco){
@@ -19,6 +20,7 @@ public class Seguradora {
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
+        listaSeguradoras.add(this);
     }
 
     //getters da classe
@@ -44,6 +46,10 @@ public class Seguradora {
 
     public List<Sinistro> getListaSinistros(){
         return listaSinistros;
+    }
+
+    public static List<Seguradora> getListaSeguradoras(){
+        return listaSeguradoras;
     }
 
     //setters da classe

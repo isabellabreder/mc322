@@ -2,11 +2,8 @@ package projeto;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class AppMain {
-
-    public static ArrayList<Seguradora> seguradoras = new ArrayList<>();
 	public static void main(String[] args){
         
         boolean sair = false;
@@ -47,8 +44,6 @@ public class AppMain {
             }
         }
     }
-    
-    // Outros métodos do programa
     
     private static void executarOperacaoCadastrar() {
         boolean voltar = false;
@@ -169,7 +164,7 @@ public class AppMain {
         String nome_seguradora = scanner.nextLine();
         
         Seguradora seguradora = null;
-        for (Seguradora _seguradora : seguradoras){
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
             if(_seguradora.getNome().equals(nome_seguradora)){
                 seguradora = _seguradora;
                 break;
@@ -211,8 +206,6 @@ public class AppMain {
     private static void executarOperacaoCalcularReceitaSeguradora() {
         // Código para calcular a receita da seguradora
     }
-    
-    // Outros métodos auxiliares
     
     private static void exibirMenuPrincipal() {
         System.out.println("********** Menu Principal **********");
@@ -270,36 +263,46 @@ public class AppMain {
         String nome_seguradora = scanner.nextLine();
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
-        System.out.print("Endereço: ");
-        String endereco = scanner.nextLine();
-        System.out.print("CPF: ");
-        String cpf = scanner.nextLine();
-        System.out.print("Genero: ");
-        String genero = scanner.nextLine();
-        System.out.print("Data Licença: ");
-        String dataLicencaString = scanner.nextLine();
-        LocalDate dataLicenca = LocalDate.parse(dataLicencaString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        System.out.print("Data de Nascimento (formato: dd/MM/yyyy): ");
-        String dataNascimentoString = scanner.nextLine();
-        LocalDate dataNascimento = LocalDate.parse(dataNascimentoString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        System.out.print("Educação: ");
-        String educacao = scanner.nextLine();
-        System.out.print("Classe econômica: ");
-        String classe = scanner.nextLine();
+        if (Validacao.validaNome(nome)){
+            System.out.print("Endereço: ");
+            String endereco = scanner.nextLine();
+            System.out.print("CPF: ");
+            String cpf = scanner.nextLine();
+            if (Validacao.validaCPF(cpf)){
+                System.out.print("Genero: ");
+                String genero = scanner.nextLine();
+                System.out.print("Data Licença: ");
+                String dataLicencaString = scanner.nextLine();
+                LocalDate dataLicenca = LocalDate.parse(dataLicencaString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                System.out.print("Data de Nascimento (formato: dd/MM/yyyy): ");
+                String dataNascimentoString = scanner.nextLine();
+                LocalDate dataNascimento = LocalDate.parse(dataNascimentoString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                System.out.print("Educação: ");
+                String educacao = scanner.nextLine();
+                System.out.print("Classe econômica: ");
+                String classe = scanner.nextLine();
 
-        Cliente clientePF = new ClientePF(nome, endereco, cpf, genero, dataLicenca, educacao, dataNascimento, classe);
+                Cliente clientePF = new ClientePF(nome, endereco, cpf, genero, dataLicenca, educacao, dataNascimento, classe);
 
-        Seguradora seguradora = null;
-        for (Seguradora _seguradora : seguradoras){
-            if(_seguradora.getNome().equals(nome_seguradora)){
-                seguradora = _seguradora;
-                break;
+                Seguradora seguradora = null;
+                for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+                    if(_seguradora.getNome().equals(nome_seguradora)){
+                        seguradora = _seguradora;
+                        break;
+                    }
+                }
+
+                seguradora.cadastrarCliente(clientePF);
+                System.out.println("Cliente Pessoa Física cadastrado com sucesso!");
+            } else {
+                System.out.println("O CPF informado é inválido! Tente cadastrar novamente.");
             }
-        }
-
-        seguradora.cadastrarCliente(clientePF);
-        System.out.println("Cliente Pessoa Física cadastrado com sucesso!");
-        scanner.close();
+            
+            } else {
+                System.out.println("O nome é inválido! Tente cadastrar novamente.");
+            }
+        
+            scanner.close();
     }
     
     private static void cadastrarClientePJ() {
@@ -314,33 +317,81 @@ public class AppMain {
         String endereco = scanner.nextLine();
         System.out.print("CNPJ: ");
         String cnpj = scanner.nextLine();
-        System.out.print("Data Fundação (formato: dd/MM/yyyy): ");
-        String dataFundacaoString = scanner.nextLine();
-        LocalDate dataFundacao = LocalDate.parse(dataFundacaoString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        System.out.print("Quantidade de funcionarios ");
-        int funcionarios = scanner.nextInt();
-
-        Cliente clientePJ = new ClientePJ(nome, endereco, cnpj, dataFundacao, funcionarios);
-
-        Seguradora seguradora = null;
-        for (Seguradora _seguradora : seguradoras){
-            if(_seguradora.getNome().equals(nome_seguradora)){
-                seguradora = _seguradora;
-                break;
+        if(Validacao.validaCPNJ(cnpj)){
+            System.out.print("Data Fundação (formato: dd/MM/yyyy): ");
+            String dataFundacaoString = scanner.nextLine();
+            LocalDate dataFundacao = LocalDate.parse(dataFundacaoString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            System.out.print("Quantidade de funcionarios ");
+            int funcionarios = scanner.nextInt();
+    
+            Cliente clientePJ = new ClientePJ(nome, endereco, cnpj, dataFundacao, funcionarios);
+    
+            Seguradora seguradora = null;
+            for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+                if(_seguradora.getNome().equals(nome_seguradora)){
+                    seguradora = _seguradora;
+                    break;
+                }
             }
+    
+            seguradora.cadastrarCliente(clientePJ);
+            System.out.println("Cliente Pessoa Jurídica cadastrado com sucesso!");
+        } else {
+            System.out.println("O CNPJ informado é inválido! Tente cadastrar novamente.");
         }
 
-        seguradora.cadastrarCliente(clientePJ);
-        System.out.println("Cliente Pessoa Jurídica cadastrado com sucesso!");
         scanner.close();
     }
     
     private static void cadastrarVeiculo() {
-        // Código para cadastrar um veículo
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Cadastrar Veículo **********");
+        System.out.print("Nome do cliente: ");
+        String nome_cliente = scanner.nextLine();
+        System.out.print("Placa: ");
+        String placa = scanner.nextLine();
+        System.out.print("Marca: ");
+        String marca = scanner.nextLine();
+        System.out.print("Modelo: ");
+        String modelo = scanner.nextLine();
+        System.out.print("Ano de fabricação: ");
+        int anoFabricacao = scanner.nextInt();
+
+        Veiculo veiculo = new Veiculo(placa, marca, modelo, anoFabricacao);
+
+        Cliente cliente = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            for(Cliente _cliente : _seguradora.getListaClientes()){
+                if(_cliente.getNome().equals(nome_cliente)){
+                    cliente = _cliente;
+                    break;
+                }
+            }
+        }
+
+        cliente.cadastraVeiculo(veiculo);
+        System.out.println("Veículo cadastrado com sucesso!");
+        scanner.close();
     }
     
     private static void cadastrarSeguradora() {
-        // Código para cadastrar uma seguradora
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Cadastrar Seguradora **********");
+        System.out.print("Nome da seguradora: ");
+        String nome = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("E-mail: ");
+        String email = scanner.nextLine();
+        System.out.print("Endereço: ");
+        String endereco = scanner.nextLine();
+
+        Seguradora seguradora = new Seguradora(nome, telefone, email, endereco);
+
+        System.out.println("Seguradora "+seguradora.getNome()+" cadastrada com sucesso!");
+        scanner.close();
     }
     
     private static void listarClientesPorSeguradora() {
