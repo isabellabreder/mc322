@@ -252,7 +252,9 @@ public class AppMain {
     private static int lerOpcaoMenu() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Selecione uma opção: ");
-        return scanner.nextInt();
+        int opcao = scanner.nextInt();
+        scanner.close();
+        return opcao;
     }
     
     private static void cadastrarClientePF() {
@@ -395,34 +397,186 @@ public class AppMain {
     }
     
     private static void listarClientesPorSeguradora() {
-        // Código para listar clientes por seguradora
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Listar Clientes por Seguradora **********");
+        System.out.print("Nome da seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        for (Cliente _cliente : seguradora.getListaClientes()){
+            System.out.println(_cliente.getNome());
+        }
+        System.out.println("****************************************************");
+        scanner.close();
     }
     
     private static void listarSinistrosPorSeguradora() {
-        // Código para listar sinistros por seguradora
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Listar Sinistros por Seguradora **********");
+        System.out.print("Nome da seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        for (Sinistro _sinistro : seguradora.getListaSinistros()){
+            System.out.println(_sinistro.toString()+"\n");
+        }
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void listarSinistrosPorCliente() {
-        // Código para listar sinistros por cliente
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Listar Sinistros por Cliente **********");
+        System.out.print("Nome do Cliente: ");
+        String nome_cliente = scanner.nextLine();
+        System.out.println("Nome da Seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        seguradora.visualizarSinistro(nome_cliente);
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void listarVeiculosPorCliente() {
-        // Código para listar veículos por cliente
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Listar Veiculos por Cliente **********");
+        System.out.print("Nome do Cliente: ");
+        String nome_cliente = scanner.nextLine();
+
+        Cliente cliente = null;
+        for (Cliente _cliente : Cliente.getListaClientes()){
+            if(_cliente.getNome().equals(nome_cliente)){
+                cliente = _cliente;
+                break;
+            }
+        }
+
+        cliente.getListaVeiculos();
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void listarVeiculosPorSeguradora() {
-        // Código para listar veículos por seguradora
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Listar Veiculos por Seguradora **********");
+        System.out.println("Nome da Seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        for (Cliente _cliente : seguradora.getListaClientes()){
+            _cliente.getListaVeiculos();
+        }
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void excluirCliente() {
-        // Código para excluir um cliente
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Excluir Cliente **********");
+        System.out.print("Nome do Cliente: ");
+        String nome_cliente = scanner.nextLine();
+        System.out.println("Nome da Seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        seguradora.removerCliente(nome_cliente);
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void excluirVeiculo() {
-        // Código para excluir um veículo
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Excluir Veículo **********");
+        System.out.print("Nome do Cliente: ");
+        String nome_cliente = scanner.nextLine();
+        System.out.println("Placa do Veículo: ");
+        String placa_veiculo = scanner.nextLine();
+
+        Cliente cliente = null;
+        for (Cliente _cliente : Cliente.getListaClientes()){
+            if(_cliente.getNome().equals(nome_cliente)){
+                cliente = _cliente;
+                break;
+            }
+        }
+
+        for (Veiculo _veiculo : cliente.getListaVeiculos()){
+            if (_veiculo.getPlaca() == placa_veiculo){
+                cliente.removeVeiculo(_veiculo);
+                break;
+            }
+        }
+        System.out.println("*****************************************************");
+        scanner.close();
     }
     
     private static void excluirSinistro() {
-        // Código para excluir um sinistro
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("********** Excluir Sinistro **********");
+        System.out.println("Nome da Seguradora: ");
+        String nome_seguradora = scanner.nextLine();
+        System.out.println("ID do Sinistro: ");
+        int id_sinistro = scanner.nextInt();
+
+        Seguradora seguradora = null;
+        for (Seguradora _seguradora : Seguradora.getListaSeguradoras()){
+            if(_seguradora.getNome().equals(nome_seguradora)){
+                seguradora = _seguradora;
+                break;
+            }
+        }
+
+        for (Sinistro _sinistro : seguradora.getListaSinistros()){
+            if (_sinistro.getId() == id_sinistro){
+                seguradora.removerSinistro(_sinistro);
+                break;
+            }
+        }
+        System.out.println("*****************************************************");
+        scanner.close();
     }
 }

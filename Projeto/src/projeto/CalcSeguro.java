@@ -15,6 +15,7 @@ public enum CalcSeguro {
 	public double getValor(){
 		return valor;
 	}
+	
 	public static double getFatorIdade(int idade){
 		if (idade >= 18 && idade < 30){
 			return FATOR_18_30.getValor();

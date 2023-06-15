@@ -1,26 +1,27 @@
 package projeto;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ClientePF extends Cliente{
     private final String cpf;
     private String genero;
-    private LocalDate dataLicenca;
     private String educacao;
-    private LocalDate dataNascimento; 
-    private String classeEconomica;
+    private LocalDate dataNascimento;
     private int idade; 
+    private List<Veiculo> listaVeiculos = new ArrayList<Veiculo>();
 
-    public ClientePF(String nome, String endereco, String cpf, String genero, LocalDate dataLicenca, String educacao, LocalDate dataNascimento, String classeEconomica){
-        super(nome, endereco);
+    public ClientePF(String nome, String endereco, String email, int telefone, String cpf, String genero, String educacao, LocalDate dataNascimento){
+        super(nome, endereco, email, telefone);
         this.cpf = cpf;
         this.genero = genero;
-        this.dataLicenca = dataLicenca;
         this.educacao = educacao;
         this.dataNascimento = dataNascimento;
-        this.classeEconomica = classeEconomica;
+        this.listaVeiculos = new ArrayList<Veiculo>();
         this.setIdade();
     }
+
     //getters da classe
     public String getCPF(){
         return cpf;
@@ -30,20 +31,12 @@ public class ClientePF extends Cliente{
         return genero;
     }
 
-    public LocalDate getDataLicenca(){
-        return dataLicenca;
-    }
-
     public String getEducacao(){
         return educacao;
     }
 
     public LocalDate getDataNascimento(){
         return dataNascimento;
-    }
-
-    public String getClasseEconomica(){
-        return classeEconomica;
     }
 
     @Override
@@ -60,20 +53,12 @@ public class ClientePF extends Cliente{
         this.genero = genero;
     }
 
-    public void setDataLicenca(LocalDate dataLicenca){
-        this.dataLicenca = dataLicenca;
-    }
-
     public void setEducacao(String educacao){
         this.educacao = educacao;
     }
 
     public void setDataNascimento(LocalDate dataNascimento){
         this.dataNascimento = dataNascimento;
-    }
-
-    public void setClasseEconomica(String classeEconomica){
-        this.classeEconomica = classeEconomica;
     }
 
     //calcula a idade da pessoa
@@ -83,15 +68,29 @@ public class ClientePF extends Cliente{
         this.idade = intervalo.getYears();
     }
 
-    //métodos de um cliente PF
-    @Override
-    public double calculaScore() {
-    	return CalcSeguro.VALOR_BASE.getValor()*CalcSeguro.getFatorIdade(idade)*super.getQtVeiculos();
+    //cadastra um veiculo
+    public boolean cadastrarVeiculo(Veiculo veiculo){
+        boolean add = false;
+        listaVeiculos.add(veiculo);
+        if (listaVeiculos.contains(veiculo)){
+            add = true;
+        }
+        return add;
+    }
+
+    //remove um veiculo
+    public boolean removeVeiculo(Veiculo veiculo){
+        boolean rm = false;
+        listaVeiculos.remove(veiculo);
+        if (!listaVeiculos.contains(veiculo)){
+            rm = true;
+        }
+        return rm;
     }
 
     //faz a sobrescrita do método toString(), retornando as propriedades do objeto
     @Override
     public String toString(){
-        return "Nome: " + super.getNome() + "\nEndereço: " + super.getEndereco() + "\nCPF: " + this.cpf + "\nGenero: " + this.genero + "\nData de licença: " + this.dataLicenca + "\nEducação: " + this.educacao + "\nData de nascimento: " + this.dataNascimento + "\nClasse econômica: " + this.classeEconomica;
+        return "Nome: " + super.getNome() + "\nEndereço: " + super.getEndereco() + "\nCPF: " + this.cpf + "\nGenero: " + this.genero + "\nEducação: " + this.educacao + "\nData de nascimento: " + this.dataNascimento;
     }
 }

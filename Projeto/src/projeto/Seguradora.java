@@ -149,6 +149,17 @@ public class Seguradora {
         }
         return qtSinistros;
     }
+
+    public boolean removerSinistro(Sinistro sinistro){
+        boolean remover = false;
+        for (Sinistro _sinistro : this.getListaSinistros()){
+            if(_sinistro == sinistro){
+                listaSinistros.remove(sinistro);
+                remover = true;
+            }
+        }
+        return remover;
+    }
     
     public void calcularPrecoSeguroCliente(Cliente cliente) {
     	cliente.setValorSeguro(cliente.calculaScore() * (1 + qtSinistrosCliente(cliente)));
