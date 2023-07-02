@@ -9,13 +9,12 @@ public class Sinistro {
     private final int id;
     private LocalDate data;
     private String endereco;
-    private Seguradora seguradora;
-    private Veiculo veiculo;
-    private Cliente cliente;
+    private Condutor condutor;
+    private Seguro seguro;
     private static List<Integer> idsGerados = new ArrayList<>();
 
     //construtor
-    public Sinistro(LocalDate data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+    public Sinistro(LocalDate data, String endereco, Condutor condutor, Seguro seguro) {
         boolean existe = true;
         int novoId = 0;
         while (existe){
@@ -32,9 +31,8 @@ public class Sinistro {
         this.id = novoId;
         this.data = data;
         this.endereco = endereco;
-        this.seguradora = seguradora;
-        this.veiculo = veiculo;
-        this.cliente = cliente;
+        this.condutor = condutor;
+        this.seguro = seguro;
     }
 
     //getters da classe
@@ -50,16 +48,12 @@ public class Sinistro {
         return endereco;
     }
 
-    public Seguradora getSeguradora(){
-        return seguradora;
+    public Condutor getCondutor(){
+        return condutor;
     }
 
-    public Veiculo getVeiculo(){
-        return veiculo;
-    }
-
-    public Cliente getCliente(){
-        return cliente;
+    public Seguro getSeguro(){
+        return seguro;
     }
 
     //setters da classe
@@ -71,21 +65,17 @@ public class Sinistro {
         this.endereco = endereco;
     }
 
-    public void setSeguradora(Seguradora seguradora){
-        this.seguradora = seguradora;
+    public void setCondutor(Condutor condutor){
+        this.condutor = condutor;
     }
 
-    public void setVeiculo(Veiculo veiculo){
-        this.veiculo = veiculo;
-    }
-
-    public void setCliente(Cliente cliente){
-        this.cliente = cliente;
+    public void setSeguro(Seguro seguro){
+        this.seguro = seguro;
     }
 
     //faz a sobrecarga do método toString(), retornando as propriedades do objeto
+    @Override
     public String toString(){
-        return "ID: " + this.id + "\nData: " + this.data + "\nEndereço: " + this.endereco + "\nSeguradora: " + this.seguradora.getNome() + "\nVeículo: " + this.veiculo.getPlaca() + "\nCliente: " + this.cliente.getNome();
+        return "ID: " + this.id + "\nData: " + this.data + "\nEndereço: " + this.endereco + "\nCondutor: " + this.condutor.getNome() + "\nSeguro: " + this.seguro.getId();
     }
-
 }

@@ -24,19 +24,19 @@ public class ClientePF extends Cliente{
 
     //getters da classe
     public String getCPF(){
-        return cpf;
+        return this.cpf;
     }
 
     public String getGenero(){
-        return genero;
+        return this.genero;
     }
 
     public String getEducacao(){
-        return educacao;
+        return this.educacao;
     }
 
     public LocalDate getDataNascimento(){
-        return dataNascimento;
+        return this.dataNascimento;
     }
 
     @Override
@@ -45,7 +45,11 @@ public class ClientePF extends Cliente{
     }
 
     public int getIdade(){
-        return idade;
+        return this.idade;
+    }
+
+    public int getqtdVeiculos(){
+        return this.listaVeiculos.size();
     }
 
     //setters da classe

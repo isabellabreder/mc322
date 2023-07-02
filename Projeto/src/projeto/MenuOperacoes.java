@@ -1,7 +1,7 @@
 package projeto;
 
 public enum MenuOperacoes {
-	CADASTRAR(1),
+	CADASTRAR(1), 
 	LISTAR(2),
 	EXCLUIR(3),
 	GERAR_SINISTRO(4),

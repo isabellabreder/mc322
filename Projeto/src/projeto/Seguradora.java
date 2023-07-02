@@ -6,16 +6,18 @@ import java.util.ArrayList;
 
 public class Seguradora {
     //atributos de uma seguradora
+    private final String cnpj;
     private String nome;
     private String telefone;
     private String email;
     private String endereco;
-    private List<Sinistro> listaSinistros = new LinkedList<Sinistro>();
     private List<Cliente> listaClientes = new ArrayList<Cliente>();
+    private List<Seguro> listaSeguros = new ArrayList<Seguro>();
     private static List<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
 
     //construtor
-    public Seguradora(String nome, String telefone, String email, String endereco){
+    public Seguradora(String cnpj, String nome, String telefone, String email, String endereco){
+        this.cnpj = cnpj;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -24,6 +26,10 @@ public class Seguradora {
     }
 
     //getters da classe
+    public String getCnpj(){
+        return cnpj;
+    }
+
     public String getNome(){
         return nome;
     }
@@ -44,8 +50,8 @@ public class Seguradora {
         return listaClientes;
     }
 
-    public List<Sinistro> getListaSinistros(){
-        return listaSinistros;
+    public List<Seguro> getListaSeguros(){
+        return listaSeguros;
     }
 
     public static List<Seguradora> getListaSeguradoras(){
@@ -73,8 +79,8 @@ public class Seguradora {
         this.listaClientes = listaClientes;
     }
 
-    public void setListaSinistros(List<Sinistro> listaSinistros){
-        this.listaSinistros = listaSinistros;
+    public void setListaSeguros(List<Seguro> listaSeguros){
+        this.listaSeguros = listaSeguros;
     }
 
     //métodos da classe
@@ -109,73 +115,39 @@ public class Seguradora {
             }
         }
     }
-
-    //gera o sinistro de um veiculo de um cliente
-    public boolean gerarSinistro(LocalDate data, String endereco, Veiculo veiculo, Cliente cliente){
-        boolean adicionado = false;
-        Sinistro _sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
-        listaSinistros.add(_sinistro); 
-        if (listaSinistros.contains(_sinistro)){
-            adicionado = true;
-        }
-        return adicionado;
-    }
-
-    //lista os sinistros de um cliente específico
-    public boolean visualizarSinistro(String cliente){
-        boolean listado = false;
-        for(Sinistro sinistro : listaSinistros){
-            if(sinistro.getCliente().getNome() == cliente){
-                System.out.println(sinistro);
-                listado = true;
-            }
-        }
-        return listado;
-    }
-
-    //lista todos os sinistros da seguradora
-    public void listarSinistros(){
-        for (Sinistro sinistro : listaSinistros){
-            System.out.println("ID do sinistro: " + sinistro.getId() + "        Cliente: " + sinistro.getCliente().getNome());
-        }
-    }
     
-    public int qtSinistrosCliente(Cliente cliente){
-        int qtSinistros = 0;
-        for (Sinistro sinistro : this.getListaSinistros()){
-            if (sinistro.getCliente() == cliente){
-                qtSinistros++;
-            }
-        }
-        return qtSinistros;
+    //gera seguro PF
+    public boolean gerarSeguro(LocalDate dataInicio, LocalDate dataFim, ClientePF cliente, Veiculo veiculo){
+        SeguroPF seguro = new SeguroPF(dataInicio, dataFim, this, veiculo, cliente);
+        listaSeguros.add(seguro);
+        return true;
     }
 
-    public boolean removerSinistro(Sinistro sinistro){
-        boolean remover = false;
-        for (Sinistro _sinistro : this.getListaSinistros()){
-            if(_sinistro == sinistro){
-                listaSinistros.remove(sinistro);
-                remover = true;
-            }
-        }
-        return remover;
+    //gera seguro PJ
+    public boolean gerarSeguro(LocalDate dataInicio, LocalDate dataFim, ClientePJ cliente, Frota frota){
+        SeguroPJ seguro = new SeguroPJ(frota, cliente, dataInicio, dataFim, this);
+        listaSeguros.add(seguro);
+        return true;
     }
-    
-    public void calcularPrecoSeguroCliente(Cliente cliente) {
-    	cliente.setValorSeguro(cliente.calculaScore() * (1 + qtSinistrosCliente(cliente)));
+
+    //cancela um seguro
+    public boolean cancelarSeguro(Seguro seguro){
+        listaSeguros.remove(seguro);
+        return true;
     }
+
     
+    //todo    
     public int calcularReceita() {
         int receita = 0;
-    	for (Cliente cliente : this.getListaClientes()){
-            calcularPrecoSeguroCliente(cliente);
-            receita += cliente.getValorSeguro();
+    	for (Seguro seguro : this.listaSeguros){
+            receita += seguro.getValorMensal();
         }
         return receita;
     }
 
     @Override
     public String toString(){
-    	return "Nome: " + this.nome + "\nTelefone: " + this.telefone + "\nE-mail: " + this.email + "\nEndereço: " + this.endereco + "\nNúmero de Clientes: " + this.listaClientes.size() + "\nNúmero de Sinistros: " + this.listaSinistros.size();
+    	return "Nome: " + this.nome + "\nTelefone: " + this.telefone + "\nE-mail: " + this.email + "\nEndereço: " + this.endereco + "\nNúmero de Clientes: " + this.listaClientes.size() + "\nNúmero de Seguros: " + this.listaSeguros.size();
     }
 }

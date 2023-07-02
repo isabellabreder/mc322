@@ -22,7 +22,7 @@ public class AppMain {
                     case EXCLUIR:
                         executarOperacaoExcluir();
                         break;
-                    case GERAR_SINISTRO:
+                    case GERAR_SINISTRO: 
                         executarOperacaoGerarSinistro();
                         break;
                     case TRANSFERIR_SEGURO:

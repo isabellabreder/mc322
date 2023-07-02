@@ -3,7 +3,6 @@ package projeto;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Condutor {
     private final String cpf;
@@ -81,8 +80,6 @@ public class Condutor {
     public boolean adicionarSinistro(LocalDate data, String endereco, Seguro seguro){
         Sinistro sinistro = new Sinistro(data, endereco, this, seguro);
         listaSinistros.add(sinistro);
-        //TODO
-        //seguro.corrigeValor();
         return true;
     }
 
